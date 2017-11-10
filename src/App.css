@@ -26,3 +26,19 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+.red-item{
+  background-color: orangered;
+}
+.cell{
+  border: 1px solid #F8F8FF;
+  height: 25px;
+  width: 25px;
+  float: left;
+}
+.row{
+  clear: left;
+}
+.board{
+  display: table;
+  margin: 100px auto;
+}
