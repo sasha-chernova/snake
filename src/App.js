@@ -5,7 +5,7 @@ const figuresArray = [];
 class App extends Component {
     constructor(props) {
         super(props);
-        this.handleKeyDown = this.handleKeyDown.bind(this);
+        //this.handleKeyDown = this.handleKeyDown.bind(this);
           this.state = {
             activeFigure: 0
         }
@@ -13,26 +13,26 @@ class App extends Component {
 
     }
     componentWillMount() {
-        window.addEventListener('keydown', this.handleKeyDown);
+        //window.addEventListener('keydown', this.handleKeyDown);
         this.createFigure();
         this.chooseFigure();
     };
 
 
-    componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyDown);
-    };
-    handleKeyDown(event){
-        if(event.keyCode === 37){
-            alert('left');
-        } else if(event.keyCode === 38){
-            alert('up');
-        }else if(event.keyCode === 39){
-            alert('right');
-        }else if(event.keyCode === 32){
-            alert('down');
-        }
-    }
+    // componentWillUnmount() {
+    //     window.removeEventListener('keydown', this.handleKeyDown);
+    // };
+    // handleKeyDown(event){
+    //     if(event.keyCode === 37){
+    //         alert('left');
+    //     } else if(event.keyCode === 38){
+    //         alert('up');
+    //     }else if(event.keyCode === 39){
+    //         alert('right');
+    //     }else if(event.keyCode === 32){
+    //         alert('down');
+    //     }
+    // }
 
     createFigure = () =>{
 
@@ -47,19 +47,19 @@ class App extends Component {
         figuresArray.push(f3);
         figuresArray.push(f4);
         figuresArray.push(f5);
-        console.log(figuresArray);
+        //console.log(figuresArray);
     }
     chooseFigure(){
         let randomFigure = Math.floor(Math.random() * figuresArray.length);
         this.setState({activeFigure: randomFigure});
-        console.log(this.state.activeFigure);
-        console.log(randomFigure)
+       // console.log(figuresArray[randomFigure]);
+        this.setState({activeFigure: figuresArray[randomFigure]})
     }
     render(){
 
         return(
             <div className="App" onKeyDown={this.handleKeyDown}>
-                <Board />
+                <Board figure={this.state.activeFigure} />
 
             </div>
         );

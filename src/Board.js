@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-let boardCenter = 4;
+
 export default class Board extends Component{
     constructor(props){
         super(props);
@@ -10,50 +10,79 @@ export default class Board extends Component{
             numberCell: 10,
             boardCenter: 0,
             points:0,
-            grid: [],
             matrix: Array(10).fill(0).map(()=>Array(10).fill(0).map( ()=> 0))
         }
     }
 
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+    };
     componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown);
         this.setRandomRange();
         //this.setCenter();
         setTimeout(
             () => {
                 const {matrix} = this.state;
-
                 const newMatrix = [...matrix];
-                //this.setState({matrix: Array(10).fill(Array(10).fill(0))});
 
-                matrix[1][2] = 1;
+                let f1 = [[0,0], [0,1], [1,0], [1,1]];
+                let f2 = [[0,2], [1,0], [1,1], [1,2]];
+                let f3 = [[0,1], [1,0], [1,1], [1,2]];
+                let f4 = [[0,0], [0,1], [1,1], [1,2]];
+                let f5 = [[0,0], [0,1], [0,2]];
+
+                f3.map(i =>{
+                    let x= i[0];
+                    let y =i[1];
+                    matrix[x][y]=1;
+                });
                 this.setState({matrix: newMatrix});
-                //this.forceUpdate();
 
-            }, 3000
+// console.log(this.props.activeFigure)
+            }, 1000
 
         )
+    }
+
+    handleKeyDown = (event) => {
+        const matrix = this.state.matrix;
+        const newMatrix = [...matrix];
+        if(event.keyCode === 37){
+            matrix.map(i =>{
+                if(i[i.length-1] !=1) {
+                    let arr1 = i.shift();
+                    i.push(arr1);
+                }
+            });
+            this.setState({matrix: newMatrix});
+
+        } else if(event.keyCode === 38){
+            //alert('up');
+
+        }else if(event.keyCode === 39){
+            matrix.map(i =>{
+                if(i[i.length-1] !=1) {
+                    let arr1 = i.pop();
+                    i.unshift(arr1);
+                }
+            });
+            this.setState({matrix: newMatrix});
+        }else if(event.keyCode === 32){
+            //alert('down');
+
+        }
+
     }
     setRandomRange = () =>  {
         this.setState({
            numberCell: (Math.floor(Math.random() * (20 - 6 + 1)) + 6),
            boardCenter: Math.floor(this.state.numberCell/2)
         });
-        // console.log(this.state.numberCell)
-        //     //his.setState({})
-        // console.log(this.state.boardCenter)
     }
 
     render(){
-    // let rows = [];
-    //
-    //     for (let i = 0; i < this.state.numberCell; i++){
-    //         let cell = [];
-    //         for (let idx = 0; idx < this.state.numberCell; idx++){
-    //             let keyID = `${i},${idx}`;
-    //             cell.push(<div className="cell red-item" key={keyID}>{keyID}</div>)
-    //         }
-    //         rows.push(<div className="row" key={i}>{cell}</div>)
-    //     }
 
         const {matrix} = this.state;
         if (!matrix) {
