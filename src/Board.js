@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-let boardCenter = 4;
+
 export default class Board extends Component{
     constructor(props){
         super(props);
@@ -17,17 +17,18 @@ export default class Board extends Component{
 
     componentDidMount() {
         this.setRandomRange();
-        //this.setCenter();
         setTimeout(
             () => {
                 const {matrix} = this.state;
-
                 const newMatrix = [...matrix];
-                //this.setState({matrix: Array(10).fill(Array(10).fill(0))});
-
-                matrix[1][2] = 1;
+                // matrix[1][2] = 1;
+                //let f2 = [[0][2], [1,0], [1,1], [1,2]];
+                //let f3 = [[[0],[2]], [[1],[0]], [[1],[1]], [[1],[2]]];
+                // f3.map(i=>{
+                //     i.map(j=>console.log(i,j))
+                // })
+                matrix[0][2]= matrix[1][0] = matrix[1][1] = matrix[1][2] = 1;
                 this.setState({matrix: newMatrix});
-                //this.forceUpdate();
 
             }, 3000
 
@@ -38,23 +39,10 @@ export default class Board extends Component{
            numberCell: (Math.floor(Math.random() * (20 - 6 + 1)) + 6),
            boardCenter: Math.floor(this.state.numberCell/2)
         });
-        // console.log(this.state.numberCell)
-        //     //his.setState({})
-        // console.log(this.state.boardCenter)
+
     }
 
     render(){
-    // let rows = [];
-    //
-    //     for (let i = 0; i < this.state.numberCell; i++){
-    //         let cell = [];
-    //         for (let idx = 0; idx < this.state.numberCell; idx++){
-    //             let keyID = `${i},${idx}`;
-    //             cell.push(<div className="cell red-item" key={keyID}>{keyID}</div>)
-    //         }
-    //         rows.push(<div className="row" key={i}>{cell}</div>)
-    //     }
-
         const {matrix} = this.state;
         if (!matrix) {
             return null
