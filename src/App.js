@@ -4,13 +4,14 @@ import Board from './Board.js';
 import getRandomFigure  from "./Figure";
 
 
-const numberCell =10;
+const numberCell = Math.floor(Math.random() * (20 - 6 + 1)) + 6;
 const center = Math.floor(numberCell/2 - 3/2);
 class App extends Component {
     constructor(props) {
         super(props);
           this.state = {
-            activeFigure: getRandomFigure().step({x:center, y:0 })
+            activeFigure: getRandomFigure().step({x:center, y:0 }),
+            stableFigures: []
         }
     }
     componentWillUnmount() {
@@ -19,19 +20,25 @@ class App extends Component {
     componentDidMount() {
         window.addEventListener('keydown', this.handleKeyDown);
         const {activeFigure} = this.state;
-        let allowedDropping = function(step){
-            return step[0] < numberCell - 1;
-        };
-        if(activeFigure.every(allowedDropping)){
-            // console.log(activeFigure.every(allowedDropping))
-            //  var startDropping = setInterval(()=>{
-            //     activeFigure.stepDown(); this.forceUpdate()
-            //  }, 1000)
-        }
-        //else{
-        //     clearInterval(startDropping);
-        //}
 
+        let startDropping = setInterval(()=>{
+            let allowedDropping = function(step){
+                return step[0] < numberCell - 1;
+            };
+             if(activeFigure.every(allowedDropping)) {
+                 activeFigure.stepDown();
+                 this.forceUpdate()
+             } else{
+                 clearInterval(startDropping);
+                 this.setState({
+                     stableFigures: this.state.stableFigures.concat(activeFigure),
+                     activeFigure: getRandomFigure().step({x:center, y:0 })
+                 });
+
+                 console.log(this.state.stableFigures);
+
+             }
+             }, 1000);
     }
 
     handleKeyDown = (event) => {
