@@ -29,16 +29,27 @@ function getRandomFigure(){
             const figure = arr;
             var center = figure[1];
             for (var i = 0; i < figure.length; i++) {
-                let relativeX = figure[i][0] - center[0];
-                let relativeY = figure[i][1] - center[1];
-                let rotatedX = relativeY;
-                let rotatedY = -relativeX;
-                figure[i][0] = center[0] + rotatedX;
-                figure[i][1] = center[1] + rotatedY;
-            }
-
+                    let relativeX = figure[i][0] - center[0];
+                    let relativeY = figure[i][1] - center[1];
+                    let rotatedX = relativeY;
+                    let rotatedY = -relativeX;
+                    figure[i][0] = center[0] + rotatedX;
+                    figure[i][1] = center[1] + rotatedY;
+                }
     }
 
+    function rotationAnti(arr){
+        const figure = arr;
+        var center = figure[1];
+        for (var i = 0; i < figure.length; i++) {
+            let relativeX = figure[i][0] - center[0];
+            let relativeY = figure[i][1] - center[1];
+            let rotatedX = relativeY;
+            let rotatedY = -relativeX;
+            figure[i][0] = center[0] - rotatedX;
+            figure[i][1] = center[1] - rotatedY;
+        }
+    }
    figure.stepLeft = ()=> {
       return figure.step({x:-1, y:0});
    };
@@ -49,7 +60,9 @@ function getRandomFigure(){
        if(!figure.isCube) rotation(figure);
 
    }
-
+    figure.rotateAnti = () =>{
+        if(!figure.isCube) rotationAnti(figure);
+    }
    figure.stepUp=()=>{
        figure.step({x:0, y:-1})
    };
