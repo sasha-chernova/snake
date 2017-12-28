@@ -14,7 +14,8 @@ class App extends Component {
             gameOver: false,
             activeFigure: getRandomFigure().step({x: center, y: 0}),
             stableFiguresArray: [],
-            score: 0
+            score: 0,
+            runGame: true
         }
 
     }
@@ -33,6 +34,7 @@ class App extends Component {
             activeFigure: getRandomFigure().step({x: center, y: 0})
         });
         this.startDropping = setInterval(this.gameTick, 400);
+        console.log('new figure created')
 
     };
     gameTick =async () => {
@@ -63,12 +65,7 @@ class App extends Component {
         });
         // this.forceUpdate();
     };
-    newGame = () =>{
-        clearInterval(this.startDropping);
-        this.newFigure();
-        this.setState({stableFiguresArray: [],
-        score: 0});
-    }
+
     stopMoving = () => {
         const {activeFigure, stableFiguresArray} = this.state;
         clearInterval(this.startDropping);
@@ -103,8 +100,22 @@ class App extends Component {
     };
     pauseGame = () =>{
         clearInterval(this.startDropping);
+        this.buttonDOM.blur();
+        this.setState({runGame:false})
     }
-
+    restartNewFigure = ()=>{
+        this.setState({runGame:true});
+        this.startDropping = setInterval(this.gameTick, 400);
+        this.buttonRestart.blur();
+    }
+    newGame = () =>{
+        clearInterval(this.startDropping);
+        this.newFigure();
+        this.setState({stableFiguresArray: [],
+            score: 0});
+        this.buttonDOM.blur();
+        this.setState({runGame:true});
+    }
     makeFixed = (figure) => new Promise( (resolve,reject) => this.setState((prevState, props)=>{
         resolve();
        return ({
@@ -170,12 +181,19 @@ class App extends Component {
     }
 
     render() {
-        const {activeFigure, stableFiguresArray, gameOver, score} = this.state;
+        const {activeFigure, stableFiguresArray, gameOver, score, runGame} = this.state;
         const showGameOver = gameOver ? <div className="game-over">Game Over!</div> : '';
         const userScore = <div className="score">Your score: <span>{score *10}</span></div>;
-        const stopGame = <div className="buttonBlock"><button className="pause-btn btn" onClick={this.pauseGame}>Pause Game</button></div>;
-        const restartGame = <div className="buttonBlock"><button className="start-btn btn" onClick={()=>this.startDropping = setInterval(this.gameTick, 400)}>Restart Figure</button></div>;
-        const startGame = <div className="buttonBlock"><button className="replay-btn btn" onClick={this.newGame}>Start New Game</button></div>;
+        const stopGame = <div className="buttonBlock"><button className="pause-btn btn"
+                                                              onClick={this.pauseGame}
+                                                              ref={(buttonDOM) => { this.buttonDOM = buttonDOM; }}
+                                                              disabled={!runGame}>Pause Game</button></div>;
+        const restartGame = <div className="buttonBlock"><button className="start-btn btn"
+                                                                 onClick={this.restartNewFigure}
+                                                                 ref={(buttonRestart) => { this.buttonRestart = buttonRestart; }}
+            disabled={runGame}>Restart Figure</button></div>;
+        const startGame = <div className="buttonBlock"><button className="replay-btn btn" onClick={this.newGame}
+                                                               ref={(buttonDOM) => { this.buttonDOM = buttonDOM; }}>Start New Game</button></div>;
         return (
             <div className="App" onKeyDown={this.handleKeyDown}>
                 {showGameOver}

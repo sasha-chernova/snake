@@ -52,9 +52,11 @@ function getRandomFigure(){
     }
    figure.stepLeft = ()=> {
       return figure.step({x:-1, y:0});
+       console.log('left');
    };
    figure.stepRight=()=>{
-       figure.step({x:1, y:0})
+       figure.step({x:1, y:0});
+       console.log('right');
    };
    figure.rotate = ()=> {
        if(!figure.isCube) rotation(figure);
@@ -67,7 +69,10 @@ function getRandomFigure(){
        figure.step({x:0, y:-1})
    };
    figure.stepDown = ()=>{
-       figure.step({x:0, y:1})};
+       figure.step({x:0, y:1});
+       console.log('down');
+   };
+
 
    return figure;
 }

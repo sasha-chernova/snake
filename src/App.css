@@ -58,3 +58,6 @@
 .replay-btn{
   background-color: forestgreen;
 }
+.btn:disabled{
+  opacity: 0.5;
+}
